@@ -7,27 +7,19 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import static org.junit.Assert.assertTrue;
 
 
 public class MyStepdefsInlämningsuppgift {
 
     private WebDriver driver;
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-
-
-
-    @After
-    public void teardown() {
-
-        if (driver != null) {
-            driver.quit();
-        }
-
-    }
+    private WebDriverWait wait;
 
     @Given("I am on the registration page")
     public void iAmOnTheRegistrationPage() {
@@ -45,6 +37,7 @@ public class MyStepdefsInlämningsuppgift {
         }
 
         driver.get("https://membership.basketballengland.co.uk/NewSupporterAccount");
+        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
     }
 
 
@@ -54,8 +47,8 @@ public class MyStepdefsInlämningsuppgift {
         driver.findElement(By.id("dp")).sendKeys("14/12/1987");
         driver.findElement(By.id("member_firstname")).sendKeys("Marcus");
         driver.findElement(By.id("member_lastname")).sendKeys("Aurelius");
-        driver.findElement(By.id("member_emailaddress")).sendKeys("Marcus.Aurelius@tester.com");
-        driver.findElement(By.id("member_confirmemailaddress")).sendKeys("Marcus.Aurelius@tester.com");
+        driver.findElement(By.id("member_emailaddress")).sendKeys("Marcus.Aurelius10@tester.com");
+        driver.findElement(By.id("member_confirmemailaddress")).sendKeys("Marcus.Aurelius10@tester.com");
         driver.findElement(By.id("signupunlicenced_password")).sendKeys("Test1234");
         driver.findElement(By.id("signupunlicenced_confirmpassword")).sendKeys("Test1234");
         driver.findElement(By.cssSelector("#signup_form > div:nth-child(12) > div > div:nth-child(2) > div:nth-child(1) > label")).click();
@@ -67,10 +60,18 @@ public class MyStepdefsInlämningsuppgift {
     @And("I submit the registration form")
     public void iSubmitTheRegistrationForm() {
 
+        driver.findElement(By.cssSelector("#signup_form > div.form-actions.noborder > input")).click();
     }
 
-    @Then("I should see a confirmation message")
-    public void iShouldSeeAConfirmationMessage() {
+    @Then("I should be redirected to the confirmation page")
+    public void iShouldBeRedirectedToTheConfirmationPage() {
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.urlContains("SignUpConfirmation"));
+
+        String currentUrl = driver.getCurrentUrl();
+        assert currentUrl != null;
+        assertTrue("User is not on the confirmation page", currentUrl.contains("SignUpConfirmation"));
 
     }
 
@@ -95,11 +96,9 @@ public class MyStepdefsInlämningsuppgift {
 
     }
 
-    @Then("I should see the error message {string}")
-    public void iShouldSeeTheErrorMessage(String expectedError) {
 
-
+    @Then("I should see an error message")
+    public void iShouldSeeAnErrorMessage() {
 
     }
-
 }

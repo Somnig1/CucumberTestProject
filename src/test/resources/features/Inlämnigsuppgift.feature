@@ -9,19 +9,19 @@ Feature: User Registration on Basketball England
     Given I am on the registration page
     When I enter valid registration details
     And I submit the registration form
-    Then I should see a confirmation message
+    Then I should be redirected to the confirmation page
 
   Scenario Outline: Registration with invalid data
     Given I am on the registration page and the user is using "<Browser>"
     When I enter registration details with "<First Name>", "<Last Name>", "<Date of Birth>", "<Email>", "<Confirm Email>", "<Password>", "<Confirm Password>", "<Terms Accepted>"
     And I submit the registration form
-    Then I should see the error message "<Expected Error>"
+    Then I should see an error message
+
 
     Examples:
-      | First Name | Last Name | Date of Birth | Email               | Confirm Email       | Password | Confirm Password | Terms Accepted | Expected Error                       | Browser |
-      | John       | Doe       | 15/05/1990    | john@example.com    | john@example.com    | Pass123! | Pass123!         | Yes            |                                      | chrome  |
-      | Jane       |           | 01/12/1988    | jane@example.com    | jane@example.com    | Pass123! | Pass123!         | Yes            | Last Name is required               | chrome  |
-      | Alice      | Smith     |               | alice@example.com   | alice@example.com   | Pass123! | Pass123!         | Yes            | Date of Birth is required           | firefox |
-      | Bob        | Brown     | 22/07/2000    | bob@example.com     | bob@wrong.com       | Pass123! | Pass123!         | Yes            | Confirm Email Address does not match       | chrome  |
-      | Charlie    | Adams     | 10/03/1995    | charlie@example.com | charlie@example.com | Pass123! | Pass456!         | Yes            | Password did not match            | firefox |
-      | Dave       | Johnson   | 30/09/1987    | dave@example.com    | dave@example.com    | Pass123! | Pass123!         | No             | You must accept terms and conditions | chrome  |
+      | First Name | Last Name | Date of Birth | Email                 | Confirm Email         | Password | Confirm Password | Terms Accepted | Browser |
+      | Jane       |           | 01/12/1988    | janess@example.com    | janess@example.com    | Pass123! | Pass123!         | Yes            | chrome  |
+      | Alice      | Smith     |               | alicess@example.com   | alicess@example.com   | Pass123! | Pass123!         | Yes            | firefox |
+      | Bob        | Brown     | 22/07/2000    | bobss@example.com     | bobss@wrong.com       | Pass123! | Pass123!         | Yes            | chrome  |
+      | Charlie    | Adams     | 10/03/1995    | charliess@example.com | charliess@example.com | Pass123! | Pass456!         | Yes            | firefox |
+      | Dave       | Johnson   | 30/09/1987    | davess@example.com    | davess@example.com    | Pass123! | Pass123!         | No             | chrome  |
