@@ -101,11 +101,9 @@ public class MyStepdefsInlämningsuppgift {
     public void iShouldSeeAnErrorMessage(String expectedMessage) {
 
         wait = new WebDriverWait(driver, Duration.ofSeconds(3));
-
         WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '" + expectedMessage + "')]")));
 
         String actualMessage = errorElement.getText();
-
         assertTrue("Expected error message not found. Actual: " + actualMessage, actualMessage.contains(expectedMessage));
 
     }
