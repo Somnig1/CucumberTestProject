@@ -47,8 +47,8 @@ public class MyStepdefsInlämningsuppgift {
         driver.findElement(By.id("dp")).sendKeys("14/12/1987");
         driver.findElement(By.id("member_firstname")).sendKeys("Marcus");
         driver.findElement(By.id("member_lastname")).sendKeys("Aurelius");
-        driver.findElement(By.id("member_emailaddress")).sendKeys("Marcus.Aurelius10@tester.com");
-        driver.findElement(By.id("member_confirmemailaddress")).sendKeys("Marcus.Aurelius10@tester.com");
+        driver.findElement(By.id("member_emailaddress")).sendKeys("Marcus.Aurelius12@mailnesia.com");
+        driver.findElement(By.id("member_confirmemailaddress")).sendKeys("Marcus.Aurelius12@mailnesia.com");
         driver.findElement(By.id("signupunlicenced_password")).sendKeys("Test1234");
         driver.findElement(By.id("signupunlicenced_confirmpassword")).sendKeys("Test1234");
         driver.findElement(By.cssSelector("#signup_form > div:nth-child(12) > div > div:nth-child(2) > div:nth-child(1) > label")).click();
@@ -85,20 +85,37 @@ public class MyStepdefsInlämningsuppgift {
         driver.findElement(By.id("member_confirmemailaddress")).sendKeys(confirmEmail);
         driver.findElement(By.id("signupunlicenced_password")).sendKeys(password);
         driver.findElement(By.id("signupunlicenced_confirmpassword")).sendKeys(confirmPassword);
+        driver.findElement(By.cssSelector("#signup_form > div:nth-child(12) > div > div:nth-child(2) > div.md-checkbox.margin-top-10 > label")).click();
+        driver.findElement(By.cssSelector("#signup_form > div:nth-child(12) > div > div:nth-child(7) > label")).click();
 
         if (termsAccepted.equals("Yes")) {
 
             driver.findElement(By.cssSelector("#signup_form > div:nth-child(12) > div > div:nth-child(2) > div:nth-child(1) > label")).click();
-            driver.findElement(By.cssSelector("#signup_form > div:nth-child(12) > div > div:nth-child(2) > div.md-checkbox.margin-top-10 > label")).click();
-            driver.findElement(By.cssSelector("#signup_form > div:nth-child(12) > div > div:nth-child(7) > label")).click();
 
         }
 
     }
 
 
-    @Then("I should see an error message")
-    public void iShouldSeeAnErrorMessage() {
+    @Then("I should see an error message {string}")
+    public void iShouldSeeAnErrorMessage(String expectedMessage) {
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '" + expectedMessage + "')]")));
+
+        String actualMessage = errorElement.getText();
+
+        assertTrue("Expected error message not found. Actual: " + actualMessage, actualMessage.contains(expectedMessage));
 
     }
+
+    @After
+    public void tearDown() {
+
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
 }
